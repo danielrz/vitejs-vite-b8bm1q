@@ -1,7 +1,6 @@
-import { FC } from "react";
 import { useThemeContext } from "../../../providers/ThemeProvider";
 
-const Toggle: FC = () => {
+function Toggle() {
 
   const themeContext = useThemeContext();
 

@@ -1,11 +1,11 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { QuotesHeaderProps, QuoteStatus, Toggle, List } from './';
 import { useThemeContext } from '../../providers/ThemeProvider';
 
-const QuotesPage: FC<QuotesHeaderProps> = ({ title, initialStatus = QuoteStatus.ACTIVE }) => {
+function QuotesPage({ title, initialStatus = QuoteStatus.ACTIVE }: QuotesHeaderProps) {
   const [status, setStatus] = useState<QuoteStatus>(initialStatus)
   const themeContext = useThemeContext();
-  console.log("!!!theme::QuoteStatus", themeContext.theme); // dark
+  console.log("!!!theme::QuoteStatus", themeContext.theme);
   function toggleStatus() : void {
     if (status === QuoteStatus.ACTIVE) {
       setStatus(QuoteStatus.INACTIVE)

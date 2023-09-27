@@ -1,7 +1,6 @@
-import { FC } from "react";
 import ListItem from "./ListItem";
 
-const List: FC = () => {
+function List() {
 
   const ids = [... new Array(10).keys()]
 

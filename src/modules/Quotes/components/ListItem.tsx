@@ -1,8 +1,7 @@
-import { FC } from 'react';
 import { useThemeContext } from '../../../providers/ThemeProvider';
 import { ListItemProps } from '../interfaces';
 
-const ListItem: FC<ListItemProps> = ({ id }) => {
+function ListItem({ id }: ListItemProps) {
 
   const themeContext = useThemeContext();
 
