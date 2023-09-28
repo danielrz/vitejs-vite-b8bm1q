@@ -3,8 +3,8 @@ export enum Theme {
   LIGHT = "light"
 }
 
-export interface ThemeProviderValue {
+export interface ThemeContextValue {
   theme: Theme;
-  toggleTheme: () => void;
+  toggle: () => void;
 }
 

@@ -1,31 +1,24 @@
-import { useState, useContext, createContext, ReactNode } from 'react'
-import { Theme, ThemeProviderValue } from '../interfaces'
+import { useContext, createContext, ReactNode, useState } from "react";
+import { Theme, ThemeContextValue } from "../interfaces/ThemeProvider";
 
-const ThemeContext = createContext<ThemeProviderValue>({} as ThemeProviderValue)
+const ThemeContext = createContext<ThemeContextValue>({} as ThemeContextValue)
 
-export function useThemeContext () {
+function useThemeContext() {
   return useContext(ThemeContext)
 }
 
 function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(Theme.DARK)
-  console.log("!!!theme::provider", theme);
+  const [theme, setTheme] = useState<Theme>(Theme.LIGHT)
 
-  function toggleTheme(): void {
-    if (theme === Theme.DARK) {
-      setTheme(Theme.LIGHT)
-      return
-    }
-
-    setTheme(Theme.DARK)
+  function toggle() {
+    setTheme(theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT)
   }
 
   return (
-    <>t: {theme}
-    <ThemeContext.Provider value={{ theme, toggleTheme} as ThemeProviderValue}>
-      {children}
-    </ThemeContext.Provider></>
+    <ThemeContext.Provider value={{ theme, toggle }}>
+      { children }
+    </ThemeContext.Provider>
   )
 }
 
-export default ThemeProvider
+export { ThemeProvider as default, useThemeContext }

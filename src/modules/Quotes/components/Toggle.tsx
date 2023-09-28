@@ -6,7 +6,7 @@ function Toggle() {
 
   return (
     <label className="switch">
-      <input type="checkbox" onClick={themeContext.toggleTheme} />
+      <input type="checkbox" onClick={themeContext.toggle} />
       <span className="slider round" />
     </label>
   );
