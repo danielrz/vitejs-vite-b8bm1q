@@ -6,14 +6,16 @@ export const useDebounce = <
   fn: T,
   time: number,
 ) => {
-  const [timeout, updateTimeout] = useState<number>(0);
+  const [timeout, updateTimeout] = useState<NodeJS.Timeout>();
 
   return useCallback(
-    (...args: unknown[]) => {
+    (...args: Parameters<T>) => {
       if (timeout) {
         clearTimeout(timeout);
       }
-      updateTimeout(setTimeout(fn, time, ...args));
+      updateTimeout(setTimeout(() => {
+        fn(...args);
+      }, time));
     },
     [fn, time, timeout],
   );

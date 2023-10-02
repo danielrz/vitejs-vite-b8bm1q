@@ -13,6 +13,10 @@ function AutoComplete({ interval }: Props) {
   // }, [])
 
   async function getItems(term: string) {
+    if (!term) {
+      setItems([])
+      return
+    }
     const searchItems = await fetchItems(term)
     setItems(searchItems)
   }
