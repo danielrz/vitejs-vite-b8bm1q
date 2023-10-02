@@ -32,6 +32,7 @@ beforeEach(async () => {
 afterEach(() => {
   cleanup()
   vi.useRealTimers()
+  vi.clearAllMocks()
 })
 
 describe('AutoComplete', () => {
