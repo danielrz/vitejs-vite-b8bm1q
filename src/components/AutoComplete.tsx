@@ -1,28 +1,21 @@
-import { ChangeEvent, useState } from 'react'
-import { Props } from '../interfaces/autoComplete'
-import { useDebounce } from '../hooks/useDebounce'
-import { fetchItems } from '../api/autoComplete'
+import { ChangeEvent, useEffect, useState } from "react";
+import { Props } from "../interfaces/autoComplete";
+import useSearch from "../hooks/useSearch";
 
 function AutoComplete({ interval }: Props) {
+  const [items, setItems] = useState<string[]>([]);
+  const [term, setTerm] = useState<string>("");
 
-  const [items, setItems] = useState<string[]>([])
-
-  // const getItems = useCallback(async (term: string) => {
-  //   const searchItems = await fetchItems(term)
-  //   setItems(searchItems)
-  // }, [])
-
-  async function getItems(term: string) {
-    const searchItems = await fetchItems(term)
-    setItems(searchItems)
-  }
-
-  const debounceHandler = useDebounce(getItems, interval)
+  const searchItems = useSearch({ term, interval });
 
   async function onItemType(event: ChangeEvent<HTMLInputElement>) {
-    debounceHandler(event.target.value)
+    const term = event.target.value;
+    setTerm(term);
   }
 
+  useEffect(() => {
+    setItems(searchItems);
+  }, [searchItems]);
 
   return (
     <>
@@ -33,7 +26,7 @@ function AutoComplete({ interval }: Props) {
         ))}
       </ul>
     </>
-  )
+  );
 }
 
-export default AutoComplete
+export default AutoComplete;

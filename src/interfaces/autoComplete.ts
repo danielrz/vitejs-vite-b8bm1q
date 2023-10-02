@@ -6,7 +6,7 @@ export interface GetItemsServiceInput {
   term: string,
   interval: number
 }
-// export interface UseSearchInput {
-//   term: string,
-//   interval: number
-// }
+export interface UseSearchInput {
+  term: string,
+  interval: number
+}

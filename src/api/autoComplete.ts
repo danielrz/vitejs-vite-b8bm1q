@@ -1,5 +1,4 @@
 function fetchItems(term: string): Promise<string[]> {
-  console.log('fetchItems', term)
   return new Promise((resolve) => {
     setTimeout(() => {
       const result = [...Array(10).keys()].map((i) => `${term}-${i}`)
