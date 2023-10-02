@@ -26,8 +26,8 @@ function AutoComplete({ interval }: Props) {
 
   return (
     <>
-      <input type="text" onChange={onItemType} />
-      <ul>
+      <input type="text" onChange={onItemType} data-testid="autocomplete-input" />
+      <ul data-testid="autocomplete-list">
         {items.map((item, index) => (
           <li key={index}>{item}</li>
         ))}
