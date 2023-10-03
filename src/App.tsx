@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Button } from './components/button';
+
+export default function App() {
+  const [state, setState] = useState(1);
+
+  const submitNormal = () => {
+    console.info('submit some data here - normal');
+  };
+
+  const submitCallback = useCallback(() => {
+    console.info('submit some data here - useCallback');
+  }, []);
+
+  const submitMemo = useMemo(
+    () => () => {
+      console.info('submit some data here - useMemo');
+    },
+    [],
+  );
+
+  useEffect(() => {
+    console.info('This will be triggered every re-render (depends on submitNormal)');
+  }, [submitNormal]);
+
+  useEffect(() => {
+    console.info('This will be triggered only on mounting');
+  }, [submitCallback, submitMemo]);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      Examples of a function non-memoized and memoized via useCallback or useMemo
+      <br />
+      <br />
+      <Button onClick={() => setState(state + 1)}>Click to trigger re-render</Button>
+      <br />
+      <br />
+      <Button onClick={submitNormal}>Click to trigger normal submit</Button>
+      <Button onClick={submitCallback}>Click to trigger submit from useCallback</Button>
+      <Button onClick={submitMemo}>Click to trigger submit from useMemo</Button>
     </>
-  )
+  );
 }
-
-export default App
