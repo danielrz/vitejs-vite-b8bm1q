@@ -1,89 +1,96 @@
-import React, { ReactNode, useContext, useState } from 'react';
-
-import { AnotherVerySlowComponent, VerySlowComponent } from './components/very-slow-component';
 import './styles.scss';
+import { useState, useMemo, useRef, useEffect } from 'react';
 
-const Context = React.createContext({
-  isNavExpanded: false,
-  toggle: () => {},
-});
+import debounce from 'lodash/debounce';
 
-const NavigationController = ({ children }: { children: ReactNode }) => {
-  const [isNavExpanded, setIsNavExpanded] = useState(false);
+const DebounceWithStateAndRef = () => {
+  const [value, setValue] = useState('initial');
+  const ref = useRef<any>();
 
-  const toggle = () => setIsNavExpanded(!isNavExpanded);
-  const value = { isNavExpanded, toggle };
+  const onChange = () => {
+    console.log('State value:', value);
+  };
 
-  return <Context.Provider value={value}>{children}</Context.Provider>;
-};
+  useEffect(() => {
+    ref.current = onChange;
+  }, [onChange]);
 
-const useNavigation = () => useContext(Context);
+  const debouncedCallback = useMemo(() => {
+    const func = () => {
+      ref.current?.();
+    };
 
-const AdjustableColumnsBlock = () => {
-  const { isNavExpanded } = useNavigation();
-  return isNavExpanded ? <div>two block items here</div> : <div>three block items here</div>;
-};
+    return debounce(func, 1000);
+  }, []);
 
-const MainPart = () => {
   return (
-    <>
-      <VerySlowComponent />
-      <AnotherVerySlowComponent />
-      <AdjustableColumnsBlock />
-    </>
+    <input
+      type="text"
+      onChange={(e) => {
+        debouncedCallback();
+        setValue(e.target.value);
+      }}
+      value={value}
+    />
   );
 };
 
-const ExpandButton = () => {
-  const { isNavExpanded, toggle } = useNavigation();
+const useDebounce = (callback: () => void) => {
+  const ref = useRef<any>();
 
-  return <button onClick={toggle}>{isNavExpanded ? 'collapse <' : 'expand >'}</button>;
+  useEffect(() => {
+    ref.current = callback;
+  }, [callback]);
+
+  const debouncedCallback = useMemo(() => {
+    const func = () => {
+      ref.current?.();
+    };
+
+    return debounce(func, 1000);
+  }, []);
+
+  return debouncedCallback;
 };
 
-const SidebarLayout = ({ children }: { children: ReactNode }) => {
-  const { isNavExpanded } = useNavigation();
+const DebounceWithUseCallbackAndState = () => {
+  const [value, setValue] = useState('initial');
+
+  const onChange = () => {
+    console.log('State value:', value);
+  };
+
+  const debouncedOnChange = useDebounce(onChange);
+
   return (
-    <div className="left" style={{ flexBasis: isNavExpanded ? '50%' : '20%' }}>
-      {children}
-    </div>
-  );
-};
-
-const Sidebar = () => {
-  return (
-    <SidebarLayout>
-      {/* this one will control the expand/collapse */}
-      <ExpandButton />
-
-      <ul>
-        <li>
-          <a href="#">some links</a>
-        </li>
-      </ul>
-    </SidebarLayout>
-  );
-};
-
-const Layout = ({ children }: { children: ReactNode }) => <div className="three-layout">{children}</div>;
-
-const Page = () => {
-  return (
-    <NavigationController>
-      <Layout>
-        <Sidebar />
-        <MainPart />
-      </Layout>
-    </NavigationController>
+    <input
+      type="text"
+      onChange={(e) => {
+        debouncedOnChange();
+        setValue(e.target.value);
+      }}
+      value={value}
+    />
   );
 };
 
 export default function App() {
   return (
-    <>
-      <h3>Very slow "Page" component - click on expand/collapse to toggle nav</h3>
-      <p>Only components that use Context are now re-render</p>
-      <p>Expand/collapse of the navigation doesn't trigger re-render of the slow components anymore, because of Context</p>
-      <Page />
-    </>
+    <div className="App">
+      <h1>Final working debounce with ref</h1>
+      <h3>Open console and type something in inputs</h3>
+      <div className="container">
+        <div className="column">
+          <h3>Debounce with state and ref</h3>
+          <DebounceWithStateAndRef />
+          Works like a charm!
+        </div>
+        <div className="column">
+          <h3>Extracted into a hook</h3>
+          <DebounceWithUseCallbackAndState />
+          Still works!
+        </div>
+      </div>
+    </div>
   );
 }
