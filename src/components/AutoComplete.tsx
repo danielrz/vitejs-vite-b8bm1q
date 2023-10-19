@@ -1,25 +1,30 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState, useCallback } from 'react'
 import { Props } from '../interfaces/autoComplete'
 import { useDebounce } from '../hooks/useDebounce'
 import { fetchItems } from '../api/autoComplete'
+// import HeavyComponent from './HeavyComponent'
 
-function AutoComplete({ interval }: Props) {
+function AutoComplete({ children, interval }: Props) {
 
   const [items, setItems] = useState<string[]>([])
 
-  // const getItems = useCallback(async (term: string) => {
-  //   const searchItems = await fetchItems(term)
-  //   setItems(searchItems)
-  // }, [])
-
-  async function getItems(term: string) {
+  const getItems = useCallback(async (term: string) => {
     if (!term) {
       setItems([])
       return
     }
     const searchItems = await fetchItems(term)
     setItems(searchItems)
-  }
+  }, [])
+
+  // async function getItems(term: string) {
+  //   if (!term) {
+  //     setItems([])
+  //     return
+  //   }
+  //   const searchItems = await fetchItems(term)
+  //   setItems(searchItems)
+  // }
 
   const debounceHandler = useDebounce(getItems, interval)
 
@@ -36,6 +41,8 @@ function AutoComplete({ interval }: Props) {
           <li key={index}>{item}</li>
         ))}
       </ul>
+      {/* <HeavyComponent /> */}
+      {children}
     </>
   )
 }

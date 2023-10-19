@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export const useDebounce = <
   T extends (...args: Parameters<T>) => ReturnType<T>,
@@ -6,16 +6,21 @@ export const useDebounce = <
   fn: T,
   time: number,
 ) => {
-  const [timeout, updateTimeout] = useState<NodeJS.Timeout>();
+  const timeout = useRef<NodeJS.Timeout>();
+  // const [timeout, updateTimeout] = useState<NodeJS.Timeout>();
 
   return useCallback(
     (...args: Parameters<T>) => {
-      if (timeout) {
-        clearTimeout(timeout);
+      if (timeout.current) {
+        clearTimeout(timeout.current);
       }
-      updateTimeout(setTimeout(() => {
+
+      timeout.current = setTimeout(() => {
         fn(...args);
-      }, time));
+      }, time);
+      // updateTimeout(setTimeout(() => {
+      //   fn(...args);
+      // }, time));
     },
     [fn, time, timeout],
   );
