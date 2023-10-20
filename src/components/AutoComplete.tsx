@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { Props } from "../interfaces/autoComplete";
 import useSearch from "../hooks/useSearch";
 
-function AutoComplete({ interval }: Props) {
+function AutoComplete({ children, interval }: Props) {
   const [term, setTerm] = useState<string>("");
 
   const items = useSearch({ term, interval });
@@ -20,6 +20,7 @@ function AutoComplete({ interval }: Props) {
           <li key={index}>{item}</li>
         ))}
       </ul>
+      {children}
     </>
   );
 }
