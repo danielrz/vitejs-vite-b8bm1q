@@ -10,7 +10,7 @@ function useDebounce<T extends (...args: Parameters<T>) => ReturnType<T>>(fn: T,
   }, [fn])
 
   const debounceCallback = useMemo(() => {
-    return debounce((...args: Parameters<T>) => ref.current(...args), delay)
+    return debounce((...args: Parameters<T>) => ref.current?.(...args), delay)
   }, [delay])
 
   return debounceCallback
