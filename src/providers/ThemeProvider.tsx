@@ -17,6 +17,10 @@ function useTheme() {
 }
 
 function ThemeProvider({ children }: { children: ReactNode}) {
+  
+  // check this code for use with useReducer:
+  // https://codesandbox.io/embed/usereducer-context-rjs6l6?fontsize=14&hidenavigation=1&theme=dark
+
   const [myTheme, setMyTheme] = useState<Theme>(Theme.DARK)
   const setTheme = (theme: Theme) => {
     setMyTheme(theme)
@@ -31,6 +35,7 @@ function ThemeProvider({ children }: { children: ReactNode}) {
 
 export {
   Theme,
+  type ThemeContextType,
   useTheme,
   ThemeProvider
 }

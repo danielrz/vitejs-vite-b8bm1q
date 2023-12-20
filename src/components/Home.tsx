@@ -1,10 +1,10 @@
-import { Theme, useTheme } from "../providers/ThemeProvider";
+import { Theme, useTheme, ThemeContextType } from "../providers/ThemeProvider";
 import AutoComplete from "./AutoComplete";
 import HeavyComponent from "./HeavyComponent";
 import ThemeButton from "./ThemeButton";
 
 function Home() {
-  const themeContext = useTheme();
+  const themeContext = useTheme() as ThemeContextType;
   return (
     <>
       <div>theme: {themeContext.theme}</div>
