@@ -6,17 +6,19 @@ export const useDebounce = <
   fn: T,
   time: number,
 ) => {
-  const timeout = useRef<NodeJS.Timeout>();
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
   // const [timeout, updateTimeout] = useState<NodeJS.Timeout>();
   // if i use useState then i need to use useCallback
 
   return function(...args: Parameters<T>) {
     if (timeout.current) {
+      console.log('!!!clearing timeout', { curr: timeout.current})
       clearTimeout(timeout.current);
     }
     timeout.current = setTimeout(() => {
       fn(...args);
     }, time);
+    console.log('!!!new timer', { curr: timeout.current, arg: [...args] })
   }
 
   // return useCallback(
