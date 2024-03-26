@@ -4,8 +4,9 @@ import './styles.scss';
 
 function App() {
   const themeContext = useTheme() as ThemeContextType
+  const bgColor = themeContext.theme === Theme.DARK ? 'lightgray' : 'lightpink'
   return (
-    <div style={{backgroundColor: themeContext.theme === Theme.DARK ? 'lightgray' : 'lightpink'}}>
+    <div style={{backgroundColor: bgColor}}>
       <Home />
     </div>
   )
@@ -20,3 +21,18 @@ function RootApp() {
 }
 
 export default RootApp;
+
+
+// import Home from "./components/Home"
+// import { ThemeProvider } from "./providers/ThemeProvider1"
+// import './styles.scss';
+
+// function App() {
+//   return (
+//     <ThemeProvider>
+//       <Home />
+//     </ThemeProvider>
+//   )
+// }
+
+// export default App
