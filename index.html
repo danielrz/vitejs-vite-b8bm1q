@@ -10,21 +10,25 @@
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
     <script lang="javascript">
-      (() => {
-        const mySetTimeout = window.setTimeout
-        const timers = []
+      /* if I remove the coments here it will influence the reactivity of the site
+      useCallback, useRef and useMemo will not work as expected
+      */
 
-       window.setTimeout = (...args) => {
-        const timer = mySetTimeout(...args)
-        timers.push(timer)
-       }
+      // (() => {
+      //   const mySetTimeout = window.setTimeout
+      //   const timers = []
 
-       window.clearallTimers = () => {
-        timers.forEach((timer) => {
-          clearTimeout(timer)
-        })
-       }
-      })()
+      //  window.setTimeout = (...args) => {
+      //   const timer = mySetTimeout(...args)
+      //   timers.push(timer)
+      //  }
+
+      //  window.clearallTimers = () => {
+      //   timers.forEach((timer) => {
+      //     clearTimeout(timer)
+      //   })
+      //  }
+      // })()
     </script>
   </body>
 </html>
