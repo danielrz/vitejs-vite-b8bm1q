@@ -9,3 +9,10 @@ export enum Operation {
   Multiply = 'multiply',
   Divide = 'divide'
 }
+
+export interface Domain {
+  domain: string
+  create_date: string
+  country: string
+  isDead: string
+}

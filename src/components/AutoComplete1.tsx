@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from "react"
-import useSearch2 from "../hooks/useSearch2"
+import useDomainSearch from "../hooks/useDomainSearch"
+import { Domain } from "../types"
+// import useSearch2 from "../hooks/useSearch2"
 
 interface Props {
   delay: number
@@ -15,10 +17,11 @@ function AutoComplete1(props: Props) {
     setTerm(e.target.value)
   }
 
-  const suggestions = useSearch2({
-    term,
-    delay
-  })
+  const domains: Domain[] = useDomainSearch(term, delay)
+  // const suggestions = useSearch2({
+  //   term,
+  //   delay
+  // })
 
   return (
     <>
@@ -27,9 +30,10 @@ function AutoComplete1(props: Props) {
       <div>
         <ul>
           {
-            suggestions.map((suggestion: string, index) => {
-              return (
-                <li key={`${suggestion}-${index}`}>{suggestion}</li>
+              domains.map((domainObj: Domain, index) => {
+                const {domain, create_date, country, isDead} = domainObj;
+                return (
+                <li key={`${domain}-${index}`}>{`${domain} - ${country} - ${create_date} - ${isDead}`}</li>
               )
             })
           }
