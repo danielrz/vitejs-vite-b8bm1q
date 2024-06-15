@@ -1,8 +1,8 @@
-function PromiseAll<T extends Promise<T>>(promises: Promise<T>[]): Promise<T[]> {
-  return new Promise((resolve, reject) => {
+function PromiseAll<T>(promises: Promise<T>[]): Promise<T[]> {
+  return new Promise<T[]>((resolve, reject) => {
     const response: T[] = []
     let count = 0
-    promises.forEach((promise, index) => {
+    promises.forEach((promise: Promise<T>, index) => {
       promise.then((data: T) => {
         response[index] = data
         count += 1
@@ -12,7 +12,7 @@ function PromiseAll<T extends Promise<T>>(promises: Promise<T>[]): Promise<T[]> 
       })
       .catch((err) => {
         reject(err)
-      })
+      }) 
     })
   })
 }
